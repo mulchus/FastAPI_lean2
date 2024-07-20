@@ -44,4 +44,4 @@ class User(BaseModel):
     id: int
     role: str
     name: str
-    deeges: list[Degree] = None
+    deeges: list[Degree]
