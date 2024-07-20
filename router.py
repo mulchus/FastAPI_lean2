@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from typing import Annotated
 
 from repository import TaskRepository
-from schemas import STaskAdd, STask, STaskID, Trade
+from schemas import STaskAdd, STask, STaskID, Trade, User
 
 from database import fake_users, fake_trades
 
@@ -43,7 +43,7 @@ async def get_task(task_id: int) -> STask:
     return task
 
 
-@users_rourter.get("/{user_id}")
+@users_rourter.get("/{user_id}", response_model=list[User])
 async def get_user(user_id: int) -> list[dict]:
     return [user for user in fake_users if user.get("id") == user_id]
 

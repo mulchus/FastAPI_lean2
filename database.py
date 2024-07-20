@@ -4,7 +4,6 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 engine = create_async_engine(
     "sqlite+aiosqlite:///tasks.db",
-    # "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres",
     echo=True
 )
 
@@ -29,15 +28,18 @@ async def create_tables():
 
 
 fake_tasks = [
-    {"id": 1, "name": "Task 1", "description": "Description 1",},
-    {"id": 2, "name": "Task 2", "description": "Description 2",},
-    {"id": 3, "name": "Task 3", "description": "Description 3",},
+    {"id": 1, "name": "Task 1", "description": "Description 1"},
+    {"id": 2, "name": "Task 2", "description": "Description 2"},
+    {"id": 3, "name": "Task 3", "description": "Description 3"},
 ]
 
 fake_users = [
-    {"id": 1, "role": "admin", "name": "User 1"},
-    {"id": 2, "role": "user", "name": "User 2"},
-    {"id": 3, "role": "user", "name": "User 3"},
+    {"id": 1, "role": "admin", "name": "User 1",
+     "deeges": [{"id": 1, "created_at": "2022-01-01T00:00:00", "type_deegrees": "expert"},]
+     },
+    {"id": 2, "role": "user", "name": "User 2",
+     "deeges": [{"id": 2, "created_at": "2022-01-01T00:00:00", "type_deegrees": "newbie"}]},
+    {"id": 3, "role": "user", "name": "User 3"},    # опционально
 ]
 
 fake_trades = [
