@@ -26,3 +26,22 @@ class TasksOrm(Model):
 async def create_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Model.metadata.create_all)
+
+
+fake_tasks = [
+    {"id": 1, "name": "Task 1", "description": "Description 1",},
+    {"id": 2, "name": "Task 2", "description": "Description 2",},
+    {"id": 3, "name": "Task 3", "description": "Description 3",},
+]
+
+fake_users = [
+    {"id": 1, "role": "admin", "name": "User 1"},
+    {"id": 2, "role": "user", "name": "User 2"},
+    {"id": 3, "role": "user", "name": "User 3"},
+]
+
+fake_trades = [
+    {"id": 1, "user_id": 1, "currency": "USD", "side": "buy", "price": 100, "amount": 10},
+    {"id": 2, "user_id": 2, "currency": "EUR", "side": "sell", "price": 200, "amount": 20},
+    {"id": 3, "user_id": 2, "currency": "GBP", "side": "buy", "price": 300, "amount": 30},
+]

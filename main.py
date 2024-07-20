@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from database import create_tables
-from router import router as tasks_router
+from router import tasks_router, users_rourter, null_router
 
 
 @asynccontextmanager
@@ -14,7 +14,12 @@ async def lifespan(app: FastAPI):
     print('Завершение работы')
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title='Task Manager',
+    lifespan=lifespan)
+
 app.include_router(tasks_router)
+app.include_router(users_rourter)
+app.include_router(null_router)
 
 

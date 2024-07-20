@@ -24,4 +24,12 @@ class TaskRepository:
             task_models = result.scalars().all()
             task_schemas = [STask.model_validate(task_model) for task_model in task_models]
             return task_schemas
-            # return task_models
+
+    @classmethod
+    async def find_by_id(cls, task_id: int) -> STask:
+        async with new_session() as session:
+            query = select(TasksOrm).where(TasksOrm.id == task_id)
+            result = await session.execute(query)
+            task_model = result.scalars().first()
+            task_schema = STask.model_validate(task_model)
+            return task_schema

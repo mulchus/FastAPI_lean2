@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class STaskAdd(BaseModel):
@@ -14,3 +14,14 @@ class STask(STaskAdd):
 class STaskID(BaseModel):
     ok: bool
     task_id: int
+
+
+class Trade(BaseModel):
+    id: int
+    user_id: int
+    currency: str = Field(in_=["USD", "EUR", "GBP"])
+    side: str
+    price: float = Field(ge=0)
+    amount: float
+
+    # model_config = ConfigDict(from_attributes=True)
