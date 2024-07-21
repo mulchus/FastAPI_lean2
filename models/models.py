@@ -1,28 +1,28 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON
+from sqlalchemy import MetaData, Table, Column, Integer, String, Boolean, TIMESTAMP, ForeignKey, JSON
 
 metadata = MetaData()
 
 
-roles = Table(
-    'roles',
+role = Table(
+    'role',
     metadata,
     Column('id', Integer, primary_key=True),
     Column('name', String(128), nullable=False),
     Column('permissions', JSON)
 )
 
-users = Table(
-    'users',
+user = Table(
+    'user',
     metadata,
     Column('id', Integer, primary_key=True),
     Column('email', String(128), nullable=False),
     Column('username', String(128), nullable=False),
-    Column('password', String(128), nullable=False),
+    Column('hashed_password', String(1024), nullable=False),
     Column('created_at', TIMESTAMP, default=datetime.utcnow()),
-    Column('role_id', Integer, ForeignKey('roles.id')),
+    Column('role_id', Integer, ForeignKey(role.c.id)),
+    Column('is_active', Boolean, default=True, nullable=False),
+    Column('is_superuser', Boolean, default=False, nullable=False),
+    Column('is_verified', Boolean, default=False, nullable=False),
 )
-
-
-
