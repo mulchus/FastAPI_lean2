@@ -8,6 +8,7 @@ from fastapi.exceptions import ResponseValidationError
 
 from src.auth.base_config import auth_backend, fastapi_users
 from src.auth.schemas import UserRead, UserCreate
+from src.operations.router import operation_router
 from src.task.database import create_tables
 from src.task.router import tasks_router, users_rourter, null_router
 from src.auth.models import User
@@ -22,7 +23,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title='Task Manager',
+    title='FastAPI Manager',
     lifespan=lifespan)
 
 
@@ -41,6 +42,7 @@ app.include_router(
 app.include_router(tasks_router)
 app.include_router(users_rourter)
 app.include_router(null_router)
+app.include_router(operation_router)
 
 
 @app.exception_handler(ResponseValidationError)
