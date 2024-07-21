@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
 
-from repository import TaskRepository
-from schemas import STaskAdd, STask, STaskID, Trade, User
+from src.task.repository import TaskRepository
+from src.task.schemas import STaskAdd, STask, STaskID, Trade, User
 
-from database import fake_users, fake_trades
+from src.task.database import fake_users, fake_trades
 
 tasks_router = APIRouter(
     tags=["Tasks"],

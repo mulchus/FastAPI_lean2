@@ -5,14 +5,12 @@ from contextlib import asynccontextmanager
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import ResponseValidationError
-from fastapi_users import FastAPIUsers
 
-from auth.auth import auth_backend
-from auth.manager import get_user_manager
-from auth.schemas import UserRead, UserCreate
-from database import create_tables
-from router import tasks_router, users_rourter, null_router
-from schemas import User
+from src.auth.base_config import auth_backend, fastapi_users
+from src.auth.schemas import UserRead, UserCreate
+from src.task.database import create_tables
+from src.task.router import tasks_router, users_rourter, null_router
+from src.auth.models import User
 
 
 @asynccontextmanager
@@ -27,10 +25,6 @@ app = FastAPI(
     title='Task Manager',
     lifespan=lifespan)
 
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
-)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
@@ -43,6 +37,10 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
+app.include_router(tasks_router)
+app.include_router(users_rourter)
+app.include_router(null_router)
 
 
 @app.exception_handler(ResponseValidationError)
@@ -64,8 +62,3 @@ def protected_route(user: User = Depends(current_user)):
 @app.get("/unprotected-route")
 def unprotected_route():
     return f"Hello, anonim"
-
-
-app.include_router(tasks_router)
-app.include_router(users_rourter)
-app.include_router(null_router)
