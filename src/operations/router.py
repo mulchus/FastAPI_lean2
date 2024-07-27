@@ -1,10 +1,15 @@
+import time
+
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_cache.decorator import cache
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert
 
 from src.database import get_async_session
 from src.operations.models import operation
 from src.operations.schemas import OperationCreate
+
 
 operation_router = APIRouter(
     prefix="/operations",
@@ -46,3 +51,10 @@ async def add_specific_operation(new_operation: OperationCreate, session: AsyncS
     await session.execute(stmt)
     await session.commit()
     return {'status': 'ok'}
+
+
+@operation_router.get("/long_operation")
+@cache(expire=30)
+async def get_long_operation():
+    time.sleep(3)
+    return "Чего то так долго..."
