@@ -1,6 +1,5 @@
-from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, MetaData
-
-metadata = MetaData()
+from sqlalchemy import Table, Column, Integer, String, TIMESTAMP
+from src.database import metadata
 
 
 operation = Table(
@@ -10,6 +9,6 @@ operation = Table(
     Column("quantity", String),
     Column("figi", String),
     Column("instrument_type", String, nullable=True),
-    Column("date", TIMESTAMP),
+    Column("date", TIMESTAMP(timezone=True)),
     Column("type", String),
 )

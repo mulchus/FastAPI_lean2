@@ -46,8 +46,7 @@ async def get_specific_operations(operation_type: str, session: AsyncSession = D
 
 @operation_router.post("/")
 async def add_specific_operation(new_operation: OperationCreate, session: AsyncSession = Depends(get_async_session)):
-    # stmt = operation.insert().values(**new_operation.dict())
-    stmt = insert(operation).values(**new_operation.dict())
+    stmt = insert(operation).values(**new_operation.model_dump())
     await session.execute(stmt)
     await session.commit()
     return {'status': 'ok'}
