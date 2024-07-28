@@ -1,4 +1,6 @@
 venv
 .dockerignore
+.idea
+.git
 Dockerfile
 tasks.db
