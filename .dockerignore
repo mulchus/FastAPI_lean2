@@ -1,6 +1,11 @@
 venv
 .dockerignore
+.gitignore
+.pytest_cache
+'src\task\tasks.db'
 .idea
 .git
 Dockerfile
-tasks.db
+**/*.db
+**/__pycache__/*
+**/*.pyc
