@@ -9,3 +9,5 @@ COPY requirements ./requirements
 RUN pip install -r ./requirements/base.txt
 
 COPY . .
+
+RUN chmod a+x ./docker/*.sh

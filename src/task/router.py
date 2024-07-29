@@ -32,9 +32,9 @@ def get_dashboard_report(background_tasks: BackgroundTasks, user=Depends(current
     # 1400 ms - Клиент ждет
     send_email_report_dashboard(user.username)
     # 500 ms - Задача выполняется на фоне FastAPI в event loop'е или в другом треде
-    background_tasks.add_task(send_email_report_dashboard, user.username)
+    background_tasks.add_task(send_email_report_dashboard, user.username, "var.2")
     # 600 ms - Задача выполняется воркером Celery в отдельном процессе
-    send_email_report_dashboard.delay(user.username)
+    send_email_report_dashboard.delay(user.username, "var.3")
     return {
         "status": 200,
         "data": "Письмо отправлено",

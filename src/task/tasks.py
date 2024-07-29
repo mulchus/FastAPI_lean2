@@ -11,9 +11,9 @@ SMTP_PORT = 465
 celery = Celery('tasks', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}')
 
 
-def get_email_template_dashboard(username: str):
+def get_email_template_dashboard(username: str, send_variant: str):
     email = EmailMessage()
-    email['Subject'] = 'Натрейдил Отчет Дашборд'
+    email['Subject'] = f'Натрейдил Отчет Дашборд, {send_variant}'
     email['From'] = SMTP_USER
     email['To'] = SMTP_USER
 
@@ -30,8 +30,8 @@ def get_email_template_dashboard(username: str):
 
 
 @celery.task
-def send_email_report_dashboard(username: str):
-    email = get_email_template_dashboard(username)
+def send_email_report_dashboard(username: str, send_variant: str | None = None):
+    email = get_email_template_dashboard(username, send_variant)
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
         server.login(SMTP_USER, SMTP_PASSWORD)
         server.send_message(email)
