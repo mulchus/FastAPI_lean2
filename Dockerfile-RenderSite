@@ -1,0 +1,17 @@
+FROM python:3.11-slim
+
+RUN mkdir /fastapi_app
+
+WORKDIR /fastapi_app
+
+COPY requirements ./requirements
+
+RUN pip install -r ./requirements/base.txt
+
+COPY . .
+
+RUN chmod a+x ./docker/*.sh
+
+RUN alembic upgrade head
+
+CMD gunicorn src.main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:80
