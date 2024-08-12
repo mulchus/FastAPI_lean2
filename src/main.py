@@ -58,3 +58,14 @@ async def validation_exception_handler(request: Request, exc: ResponseValidation
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=jsonable_encoder({"details": exc.errors()})
     )
+
+
+@app.on_event("startup")
+async def startup_event() -> None:
+    redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}", encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+
+@app.on_event("shutdown")
+async def shutdown() -> None:
+    await fastapi_users.close_redis()
