@@ -9,6 +9,7 @@ from collections.abc import AsyncIterator
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from redis import asyncio as aioredis
 
@@ -16,6 +17,7 @@ from src.config import REDIS_HOST, REDIS_PORT
 from src.auth.base_config import auth_backend, fastapi_users
 from src.auth.schemas import UserRead, UserCreate
 from src.operations.router import operation_router
+from src.pages.router import pages_router
 from src.task.database import create_tables
 from src.task.router import tasks_router, users_rourter, null_router
 
@@ -37,6 +39,7 @@ app = FastAPI(
 
 # app.add_middleware(HTTPSRedirectMiddleware)
 
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
@@ -54,6 +57,7 @@ app.include_router(tasks_router)
 app.include_router(users_rourter)
 app.include_router(null_router)
 app.include_router(operation_router)
+app.include_router(pages_router)
 
 
 @app.exception_handler(ResponseValidationError)
