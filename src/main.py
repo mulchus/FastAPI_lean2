@@ -8,6 +8,7 @@ from fastapi.exceptions import ResponseValidationError
 from collections.abc import AsyncIterator
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 from redis import asyncio as aioredis
 
@@ -32,6 +33,9 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(
     title='FastAPI Manager',
     lifespan=lifespan)
+
+
+# app.add_middleware(HTTPSRedirectMiddleware)
 
 
 app.include_router(
